@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kissan Mitra - Farmer's Friend</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --primary-dark: #388E3C;
+      --primary-light: #C8E6C9;
+      --accent-color: #FF9800;
+      --text-color: #212121;
+      --text-secondary: #757575;
+      --divider-color: #BDBDBD;
+      --background-color: #F5F5F5;
+      --card-color: #FFFFFF;
+      --error-color: #F44336;
+      --success-color: #4CAF50;
+      --info-color: #2196F3;
+      --warning-color: #FF9800;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1rem 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: var(--accent-color);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent-color);
+    }
+
+    .hero {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://source.unsplash.com/1600x900/?farm,agriculture,india');
+      background-size: cover;
+      background-position: center;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-accent {
+      background-color: var(--accent-color);
+    }
+
+    .btn-accent:hover {
+      background-color: #F57C00;
+    }
+
+    .features {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      font-size: 2rem;
+      color: var(--primary-color);
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background-color: var(--accent-color);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background-color: var(--card-color);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .feature-content {
+      padding: 1.5rem;
+    }
+
+    .feature-content h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+
+    .feature-content p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .chat-container {
+      margin-top: 2rem;
+      padding: 2rem;
+      background-color: var(--card-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .chat-header h3 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .chat-messages {
+      height: 400px;
+      overflow-y: auto;
+      padding: 1rem;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border-radius: 8px;
+      max-width: 70%;
+    }
+
+    .message-user {
+      background-color: #E3F2FD;
+      margin-left: auto;
+    }
+
+    .message-assistant {
+      background-color: #E8F5E9;
+    }
+
+    .chat-input-container {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .chat-input {
+      flex-grow: 1;
+      padding: 0.8rem;
+      border: 1px solid var(--divider-color);
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    .chat-input:focus {
+      outline: 2px solid var(--primary-light);
+      border-color: var(--primary-color);
+    }
+
+    footer {
+      background-color: var(--primary-dark);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-section {
+      flex: 1;
+      margin-right: 2rem;
+      min-width: 200px;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .footer-section h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--accent-color);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: #ddd;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .language-selector {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .language-selector select {
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      border: 1px solid var(--divider-color);
+    }
+
+    /* Voice Chat Section */
+    .voice-chat-section {
+      padding: 4rem 0;
+      background-color: #e8f5e9;
+    }
+
+    .voice-chat-container {
+      background-color: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .voice-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .voice-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .voice-btn:hover {
+      background-color: var(--primary-dark);
+      transform: scale(1.1);
+    }
+
+    .voice-btn-recording {
+      animation: pulse 1.5s infinite;
+      background-color: var(--error-color);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(244, 67, 54, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+      }
+    }
+
+    .voice-status {
+      margin-top: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .call-section {
+      padding: 4rem 0;
+    }
+
+    .call-container {
+      background-color: var(--card-color);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .phone-number {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin: 1.5rem 0;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        flex-direction: column;
+      }
+
+      .footer-section {
+        margin-bottom: 2rem;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">Kissan <span>Mitra</span></div>
+        <nav>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#chat">Chat</a></li>
+            <li><a href="#voice">Voice</a></li>
+            <li><a href="#call">Call</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>AI-Powered Agricultural Assistant</h1>
+        <p>Get personalized advice on crops, weather, market prices, and government schemes - in your language!</p>
+        <div>
+          <a href="#chat" class="btn">Start Chat</a>
+          <a href="#call" class="btn btn-accent">Call Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>How We Can Help</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?weather,farm');"></div>
+          <div class="feature-content">
+            <h3>Weather Forecasts</h3>
+            <p>Get accurate weather forecasts for your area to plan irrigation and field activities.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?crops,seeds');"></div>
+          <div class="feature-content">
+            <h3>Crop Recommendations</h3>
+            <p>Receive personalized crop recommendations based on your soil, weather, and market conditions.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?market,vegetables');"></div>
+          <div class="feature-content">
+            <h3>Market Prices</h3>
+            <p>Stay updated with current market prices and trends to get the best value for your produce.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?government,office');"></div>
+          <div class="feature-content">
+            <h3>Government Schemes</h3>
+            <p>Learn about relevant government schemes and subsidies available for farmers in your region.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?pest,insect');"></div>
+          <div class="feature-content">
+            <h3>Disease & Pest Management</h3>
+            <p>Get advice on identifying and managing crop diseases and pests effectively.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-img" style="background-image: url('https://source.unsplash.com/400x200/?language,india');"></div>
+          <div class="feature-content">
+            <h3>Multi-Language Support</h3>
+            <p>Access all services in Hindi, English, Tamil, Telugu, Bengali, and Marathi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chat" class="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Chat with Kissan Mitra</h2>
+      </div>
+      <div class="chat-container">
+        <div class="chat-header">
+          <h3>Ask me anything about farming</h3>
+          <div class="language-selector">
+            <label for="chat-language">Select Language:</label>
+            <select id="chat-language">
+              <option value="en-IN">English</option>
+              <option value="hi-IN">हिन्दी (Hindi)</option>
+              <option value="ta-IN">தமிழ் (Tamil)</option>
+              <option value="te-IN">తెలుగు (Telugu)</option>
+              <option value="bn-IN">বাংলা (Bengali)</option>
+              <option value="mr-IN">मराठी (Marathi)</option>
+            </select>
+          </div>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+          <div class="message message-assistant">
+            <p>नमस्ते! मैं किसान मित्र हूँ। कृपया मुझसे कृषि, फसलों, मौसम, या सरकारी योजनाओं के बारे में कोई भी प्रश्न पूछें।</p>
+            <p>Hello! I am Kissan Mitra (Farmer's Friend). Please ask me any questions about agriculture, crops, weather, or government schemes.</p>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Type your question here...">
+          <button id="chat-send" class="btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="voice" class="voice-chat-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Voice Assistant</h2>
+      </div>
+      <div class="voice-chat-container">
+        <p>Talk to Kissan Mitra directly using your microphone. Press the button below to start speaking.</p>
+        
+        <div class="voice-buttons">
+          <button id="voice-record-btn" class="voice-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div id="voice-status" class="voice-status">Click the microphone button to start</div>
+        
+        <div class="language-selector">
+          <label for="voice-language">Select Language:</label>
+          <select id="voice-language">
+            <option value="en-IN">English</option>
+            <option value="hi-IN">हिन्दी (Hindi)</option>
+            <option value="ta-IN">தமிழ் (Tamil)</option>
+            <option value="te-IN">తెలుగు (Telugu)</option>
+            <option value="bn-IN">বাংলা (Bengali)</option>
+            <option value="mr-IN">मराठी (Marathi)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="call" class="call-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Call Our Service</h2>
+      </div>
+      <div class="call-container">
+        <p>Don't have internet? Just call our toll-free number from any phone, and speak directly with Kissan Mitra:</p>
+        <div class="phone-number">1800-XXX-XXXX</div>
+        <p>Available 24/7 in Hindi, English, Tamil, Telugu, Bengali, and Marathi languages.</p>
+        <p>Standard call rates apply. Toll-free from most networks.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About Kissan Mitra</h3>
+          <p>Kissan Mitra is an AI-powered agricultural assistant designed to help Indian farmers with personalized advice and information.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#chat">Chat</a></li>
+            <li><a href="#voice">Voice</a></li>
+            <li><a href="#call">Call</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+            <li>Email: info@kissanmitra.in</li>
+            <li>Phone: 1800-XXX-XXXX</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Kissan Mitra. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatMessages = document.getElementById('chat-messages');
+      const chatInput = document.getElementById('chat-input');
+      const chatSendBtn = document.getElementById('chat-send');
+      const voiceRecordBtn = document.getElementById('voice-record-btn');
+      const voiceStatus = document.getElementById('voice-status');
+      const chatLanguageSelect = document.getElementById('chat-language');
+      const voiceLanguageSelect = document.getElementById('voice-language');
+      
+      let isRecording = false;
+      let mediaRecorder;
+      let audioChunks = [];
+
+      // Chat functionality
+      chatSendBtn.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+
+      function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message) {
+          // Add user message
+          addChatMessage(message, 'user');
+          chatInput.value = '';
+
+          // Simulate assistant response (in a real app, this would be an API call)
+          setTimeout(() => {
+            const selectedLanguage = chatLanguageSelect.value;
+            let response;
+            
+            if (message.toLowerCase().includes('weather')) {
+              response = selectedLanguage.startsWith('hi') ? 
+                "अगले 7 दिनों के लिए मौसम का पूर्वानुमान: आंशिक रूप से बादल छाए रहेंगे। तापमान 25°C से 32°C के बीच रहेगा। बारिश की संभावना 20% है। कृपया अपने जिले का नाम बताएं अधिक विस्तृत जानकारी के लिए।" :
+                "Weather forecast for next 7 days: Partly cloudy. Temperatures between 25°C and 32°C. 20% chance of rain. Please specify your district for more detailed information.";
+            } else if (message.toLowerCase().includes('crop') || message.toLowerCase().includes('फसल')) {
+              response = selectedLanguage.startsWith('hi') ? 
+                "आपकी मिट्टी के प्रकार और मौसम के अनुसार, मैं गेहूं, चना, और सरसों की फसलों की सिफारिश करता हूं। क्या आप अपने क्षेत्र और मिट्टी के बारे में अधिक जानकारी दे सकते हैं?" :
+                "Based on your soil type and weather conditions, I recommend wheat, chickpeas, and mustard crops. Can you provide more details about your region and soil?";
+            } else {
+              response = selectedLanguage.startsWith('hi') ? 
+                "मैं आपकी कैसे सहायता कर सकता हूँ? आप मौसम, फसल अनुशंसा, बाजार मूल्य या सरकारी योजनाओं के बारे में पूछ सकते हैं।" :
+                "How can I help you? You can ask about weather, crop recommendations, market prices, or government schemes.";
+            }
+            
+            addChatMessage(response, 'assistant');
+          }, 1000);
+        }
+      }
+
+      function addChatMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender === 'user' ? 'message-user' : 'message-assistant');
+        messageDiv.innerHTML = `<p>${text}</p>`;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Voice functionality
+      voiceRecordBtn.addEventListener('click', toggleRecording);
+
+      async function toggleRecording() {
+        if (!isRecording) {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (event) => {
+              audioChunks.push(event.data);
+            };
+            
+            mediaRecorder.onstop = async () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+              const selectedLanguage = voiceLanguageSelect.value;
+              
+              voiceStatus.textContent = 'Processing your question...';
+              
+              // In a real app, you would send this to your backend
+              // For demo purposes, we'll simulate a response
+              setTimeout(() => {
+                voiceStatus.textContent = selectedLanguage.startsWith('hi') ? 
+                  'आपका प्रश्न प्रोसेस किया गया। यहां आपका उत्तर है।' :
+                  'Your question has been processed. Here is your response.';
+                  
+                voiceRecordBtn.classList.remove('voice-btn-recording');
+                
+                setTimeout(() => {
+                  voiceStatus.textContent = 'Click the microphone button to start';
+                }, 3000);
+              }, 2000);
+            };
+            
+            mediaRecorder.start();
+            isRecording = true;
+            voiceRecordBtn.classList.add('voice-btn-recording');
+            voiceStatus.textContent = 'Recording... Click again to stop';
+            
+          } catch (error) {
+            console.error('Error accessing microphone:', error);
+            voiceStatus.textContent = 'Error accessing microphone. Please check permissions.';
+          }
+        } else {
+          mediaRecorder.stop();
+          isRecording = false;
+          voiceStatus.textContent = 'Processing...';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

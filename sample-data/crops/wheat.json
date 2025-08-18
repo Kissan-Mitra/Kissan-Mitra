@@ -1,0 +1,29 @@
+{
+  "id": "crop:wheat",
+  "name": "Wheat",
+  "scientific_name": "Triticum aestivum",
+  "type": "Cereal",
+  "description": "Wheat is a grass widely cultivated for its seed, a cereal grain which is a worldwide staple food.",
+  "seasons": ["rabi"],
+  "soil_types": "Loamy, clay-loam soils with good drainage",
+  "climate": "Temperate, requires cool weather during growth and warmer weather during ripening",
+  "water_requirements": "450-650 mm during the growing season",
+  "fertilizer_requirements": "Nitrogen, phosphorus, and potassium in balanced proportions",
+  "growth_duration": "100-150 days from sowing to harvest",
+  "pests": ["aphids", "termites", "army_worm"],
+  "diseases": ["leaf_rust", "powdery_mildew", "loose_smut"],
+  "varieties": [
+    {
+      "name": "HD-2967",
+      "yield": "45-50 quintals per hectare",
+      "duration": "140-145 days",
+      "features": "High yielding, disease resistant"
+    },
+    {
+      "name": "PBW-343",
+      "yield": "40-45 quintals per hectare",
+      "duration": "135-140 days",
+      "features": "Suitable for late sowing, heat tolerant"
+    }
+  ]
+}

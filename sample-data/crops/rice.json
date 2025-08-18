@@ -1,0 +1,29 @@
+{
+  "id": "crop:rice",
+  "name": "Rice",
+  "scientific_name": "Oryza sativa",
+  "type": "Cereal",
+  "description": "Rice is the seed of the grass species Oryza sativa. As a cereal grain, it is the most widely consumed staple food for a large part of the world's human population, especially in Asia.",
+  "seasons": ["kharif"],
+  "soil_types": "Clay or clay-loam soils that retain water",
+  "climate": "Warm, humid environment with temperature between 20-40°C",
+  "water_requirements": "1200-1600 mm during the growing season",
+  "fertilizer_requirements": "Nitrogen-heavy fertilization with phosphorus and potassium supplements",
+  "growth_duration": "100-150 days from transplanting to harvest",
+  "pests": ["stem_borer", "leaf_folder", "brown_planthopper"],
+  "diseases": ["blast", "bacterial_leaf_blight", "sheath_blight"],
+  "varieties": [
+    {
+      "name": "MTU-7029 (Swarna)",
+      "yield": "55-60 quintals per hectare",
+      "duration": "140-150 days",
+      "features": "High yielding, widely adaptable"
+    },
+    {
+      "name": "IR-36",
+      "yield": "50-55 quintals per hectare",
+      "duration": "110-120 days",
+      "features": "Early maturing, disease resistant"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "pest:bollworm",
+  "name": "Cotton Bollworm",
+  "scientific_name": "Helicoverpa armigera",
+  "description": "A major pest of cotton that feeds on cotton bolls, flowers, and buds. It can cause significant yield loss if not properly managed.",
+  "affected_crops": ["cotton", "tomato", "corn", "chickpea", "pigeon pea"],
+  "symptoms": "Circular holes in bolls, buds and flowers with larval feeding damage, presence of larvae inside bolls, premature boll opening, reduced yield.",
+  "lifecycle": "Eggs are laid on tender parts of plants. Larvae go through 5-6 instars over 2-3 weeks. Pupation occurs in soil. Complete lifecycle takes 4-6 weeks depending on temperature.",
+  "management": "Regular scouting for eggs and young larvae. Implement control measures when economic threshold is reached (5-10% damaged squares or bolls).",
+  "prevention": "Crop rotation, early planting and harvesting, destruction of crop residues after harvest, trap cropping with marigold or okra.",
+  "organic_solutions": "Bacillus thuringiensis (Bt) sprays (1-2 g per liter), neem seed kernel extract (5% solution), pheromone traps for monitoring and mass trapping.",
+  "chemical_control": "For conventional cotton: Spinosad (0.5 ml per liter), Emamectin benzoate (0.2 g per liter), Chlorantraniliprole (0.3 ml per liter). Bt cotton provides built-in protection against bollworms but may still require supplemental control in heavy infestations."
+}

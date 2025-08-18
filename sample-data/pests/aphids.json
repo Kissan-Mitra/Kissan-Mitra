@@ -1,0 +1,13 @@
+{
+  "id": "pest:aphids",
+  "name": "Aphids",
+  "scientific_name": "Family Aphididae",
+  "description": "Small sap-sucking insects that can cause significant damage to a variety of crops by feeding on plant sap and transmitting plant viruses.",
+  "affected_crops": ["wheat", "rice", "cotton", "vegetables", "fruits"],
+  "symptoms": "Curling of leaves, yellowing, stunted growth, presence of honeydew and black sooty mold, clusters of small insects on the undersides of leaves and stems.",
+  "lifecycle": "Aphids reproduce rapidly under favorable conditions. Most species can reproduce both sexually and asexually. A complete lifecycle can occur within 1-2 weeks in warm weather.",
+  "management": "Regular monitoring, especially during vegetative growth. Avoid excessive nitrogen fertilization which promotes aphid reproduction.",
+  "prevention": "Maintain field hygiene, use resistant varieties where available, encourage beneficial insects like ladybugs and lacewings, use reflective mulches to repel aphids.",
+  "organic_solutions": "Neem oil spray (2-3 ml per liter of water), insecticidal soaps, strong jets of water to dislodge aphids, release of predatory insects like ladybugs.",
+  "chemical_control": "Imidacloprid (0.3 ml per liter), Acetamiprid (0.2 g per liter), Thiamethoxam (0.25 g per liter). Always follow label instructions and safety precautions."
+}

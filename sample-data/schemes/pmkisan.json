@@ -1,0 +1,15 @@
+{
+  "id": "scheme:pmkisan",
+  "name": "Pradhan Mantri Kisan Samman Nidhi",
+  "type": "Direct Income Support",
+  "description": "A central sector scheme that provides income support to all landholding farmers' families in the country to supplement their financial needs for agricultural inputs and other expenses.",
+  "eligibility": "All landholding farmer families with cultivable land, subject to exclusion criteria. Institutional landholders are not eligible.",
+  "benefits": "Financial benefit of Rs. 6,000 per year transferred directly to beneficiaries' bank accounts in three equal installments of Rs. 2,000 every four months.",
+  "how_to_apply": "Farmers can self-register through the PM-KISAN portal, Common Service Centers, or with the assistance of local agriculture officers. Required documents include Aadhaar card, bank account details, and land records.",
+  "deadlines": "No specific deadline, registration is open throughout the year.",
+  "states": ["all"],
+  "farmer_type": ["small", "marginal", "medium"],
+  "crop_type": ["all"],
+  "contact": "Local Agriculture Department or PM-KISAN helpline: 011-24300606",
+  "website": "https://pmkisan.gov.in/"
+}

@@ -1,0 +1,499 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Agricultural AI System Resources'
+
+Parameters:
+  OpenAIApiKey:
+    Type: String
+    NoEcho: true
+    Description: OpenAI API Key for accessing voice agent and embeddings
+
+  BucketNamePrefix:
+    Type: String
+    Default: 'agricultural-ai-data'
+    Description: Prefix for S3 bucket name
+
+  Environment:
+    Type: String
+    Default: 'dev'
+    AllowedValues:
+      - 'dev'
+      - 'test'
+      - 'prod'
+    Description: Deployment environment
+
+Resources:
+  # DynamoDB Tables
+  VectorDatabaseTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: !Sub '${Environment}-vector-database'
+      BillingMode: 'PAY_PER_REQUEST'
+      AttributeDefinitions:
+        - AttributeName: 'id'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'id'
+          KeyType: 'HASH'
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  KnowledgeGraphTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: !Sub '${Environment}-knowledge-graph'
+      BillingMode: 'PAY_PER_REQUEST'
+      AttributeDefinitions:
+        - AttributeName: 'nodeId'
+          AttributeType: 'S'
+        - AttributeName: 'relationshipType'
+          AttributeType: 'S'
+        - AttributeName: 'targetNodeId'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'nodeId'
+          KeyType: 'HASH'
+        - AttributeName: 'relationshipType'
+          KeyType: 'RANGE'
+      GlobalSecondaryIndexes:
+        - IndexName: 'targetNodeIndex'
+          KeySchema:
+            - AttributeName: 'targetNodeId'
+              KeyType: 'HASH'
+            - AttributeName: 'relationshipType'
+              KeyType: 'RANGE'
+          Projection:
+            ProjectionType: 'ALL'
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  TimeSeriesTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: !Sub '${Environment}-time-series'
+      BillingMode: 'PAY_PER_REQUEST'
+      AttributeDefinitions:
+        - AttributeName: 'metricId'
+          AttributeType: 'S'
+        - AttributeName: 'timestamp'
+          AttributeType: 'N'
+      KeySchema:
+        - AttributeName: 'metricId'
+          KeyType: 'HASH'
+        - AttributeName: 'timestamp'
+          KeyType: 'RANGE'
+      TimeToLiveSpecification:
+        AttributeName: 'expiryTime'
+        Enabled: true
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  SessionTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: !Sub '${Environment}-session'
+      BillingMode: 'PAY_PER_REQUEST'
+      AttributeDefinitions:
+        - AttributeName: 'sessionId'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'sessionId'
+          KeyType: 'HASH'
+      TimeToLiveSpecification:
+        AttributeName: 'expiryTime'
+        Enabled: true
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  # S3 Bucket
+  DataBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub '${BucketNamePrefix}-${Environment}-${AWS::AccountId}'
+      LifecycleConfiguration:
+        Rules:
+          - Id: TransitionToInfrequentAccess
+            Status: Enabled
+            Transitions:
+              - StorageClass: STANDARD_IA
+                TransitionInDays: 90
+          - Id: ArchiveOldData
+            Status: Enabled
+            Transitions:
+              - StorageClass: GLACIER
+                TransitionInDays: 365
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  # OpenSearch Domain
+  OpenSearchDomain:
+    Type: 'AWS::OpenSearchService::Domain'
+    Properties:
+      DomainName: !Sub 'agricultural-ai-${Environment}'
+      EngineVersion: 'OpenSearch_2.5'
+      ClusterConfig:
+        InstanceType: 't3.small.search'
+        InstanceCount: 1
+      EBSOptions:
+        EBSEnabled: true
+        VolumeSize: 10
+        VolumeType: 'gp2'
+      AccessPolicies:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+            Action: 'es:*'
+            Resource: !Sub 'arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/agricultural-ai-${Environment}/*'
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  # IAM Roles
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Sub 'agricultural-ai-${Environment}-lambda-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service: 'lambda.amazonaws.com'
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      Policies:
+        - PolicyName: 'DynamoDBAccess'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'dynamodb:GetItem'
+                  - 'dynamodb:PutItem'
+                  - 'dynamodb:UpdateItem'
+                  - 'dynamodb:DeleteItem'
+                  - 'dynamodb:Query'
+                  - 'dynamodb:Scan'
+                  - 'dynamodb:BatchWriteItem'
+                Resource:
+                  - !GetAtt VectorDatabaseTable.Arn
+                  - !GetAtt KnowledgeGraphTable.Arn
+                  - !GetAtt TimeSeriesTable.Arn
+                  - !GetAtt SessionTable.Arn
+        - PolicyName: 'S3Access'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:ListBucket'
+                  - 's3:DeleteObject'
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataBucket}'
+                  - !Sub 'arn:aws:s3:::${DataBucket}/*'
+        - PolicyName: 'OpenSearchAccess'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'es:ESHttpGet'
+                  - 'es:ESHttpPost'
+                  - 'es:ESHttpPut'
+                  - 'es:ESHttpDelete'
+                Resource: !Sub 'arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/agricultural-ai-${Environment}/*'
+        - PolicyName: 'InvokeLambda'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - 'lambda:InvokeFunction'
+                Resource: '*'
+
+  # Lambda Functions
+  VoiceGatewayFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${Environment}-voice-gateway'
+      Runtime: 'nodejs18.x'
+      Handler: 'index.handler'
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      MemorySize: 512
+      Code:
+        ZipFile: |
+          // Placeholder code - deploy actual code through CI/CD pipeline
+          exports.handler = async (event, context) => {
+            return { status: 'Voice Gateway function placeholder' };
+          };
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAIApiKey
+          SESSION_TABLE: !Ref SessionTable
+          AGENT_TOOLS_FUNCTION_ARN: !GetAtt AgentToolsFunction.Arn
+          VOICE_AGENT_CONFIG: '{"name":"Krishi Mitra","model":"gpt-4","instructions":"You are Krishi Mitra, an agricultural advisor for farmers in India."}'
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  AgentToolsFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${Environment}-agent-tools'
+      Runtime: 'nodejs18.x'
+      Handler: 'index.handler'
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 300
+      MemorySize: 1024
+      Code:
+        ZipFile: |
+          // Placeholder code - deploy actual code through CI/CD pipeline
+          exports.handler = async (event, context) => {
+            return { status: 'Agent Tools function placeholder' };
+          };
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAIApiKey
+          VECTOR_DB_TABLE: !Ref VectorDatabaseTable
+          KNOWLEDGE_GRAPH_TABLE: !Ref KnowledgeGraphTable
+          TIME_SERIES_TABLE: !Ref TimeSeriesTable
+          OPENSEARCH_DOMAIN_ENDPOINT: !GetAtt OpenSearchDomain.DomainEndpoint
+          DATA_BUCKET: !Ref DataBucket
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  DataProcessingFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${Environment}-data-processing'
+      Runtime: 'nodejs18.x'
+      Handler: 'index.handler'
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 900
+      MemorySize: 1024
+      Code:
+        ZipFile: |
+          // Placeholder code - deploy actual code through CI/CD pipeline
+          exports.handler = async (event, context) => {
+            return { status: 'Data Processing function placeholder' };
+          };
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAIApiKey
+          VECTOR_DB_TABLE: !Ref VectorDatabaseTable
+          KNOWLEDGE_GRAPH_TABLE: !Ref KnowledgeGraphTable
+          TIME_SERIES_TABLE: !Ref TimeSeriesTable
+          OPENSEARCH_DOMAIN_ENDPOINT: !GetAtt OpenSearchDomain.DomainEndpoint
+          DATA_BUCKET: !Ref DataBucket
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  # Lambda Event Sources
+  DataProcessingScheduledEvent:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      Name: !Sub '${Environment}-daily-data-processing'
+      ScheduleExpression: 'rate(24 hours)'
+      State: 'ENABLED'
+      Targets:
+        - Id: 'DataProcessingLambda'
+          Arn: !GetAtt DataProcessingFunction.Arn
+          Input: '{"operation":"process_daily_data"}'
+
+  PermissionForEventsToInvokeLambda:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref DataProcessingFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: 'events.amazonaws.com'
+      SourceArn: !GetAtt DataProcessingScheduledEvent.Arn
+
+  # S3 Event Notification for Data Processing
+  BucketEventNotification:
+    Type: AWS::S3::BucketNotificationConfiguration
+    Properties:
+      Bucket: !Ref DataBucket
+      LambdaConfigurations:
+        - Event: 's3:ObjectCreated:*'
+          Filter:
+            S3Key:
+              Rules:
+                - Name: 'prefix'
+                  Value: 'raw/'
+          Function: !GetAtt DataProcessingFunction.Arn
+
+  PermissionForS3ToInvokeLambda:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref DataProcessingFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: 's3.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:s3:::${DataBucket}'
+
+  # API Gateway for accessing Lambda functions
+  ApiGateway:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: !Sub 'agricultural-ai-${Environment}-api'
+      Description: 'API for Agricultural AI System'
+      EndpointConfiguration:
+        Types:
+          - 'REGIONAL'
+      Tags:
+        - Key: 'Environment'
+          Value: !Ref Environment
+        - Key: 'Application'
+          Value: 'AgriculturalAI'
+
+  ApiGatewayResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: 'voice'
+
+  VoiceSessionResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiGatewayResource
+      PathPart: 'voice-session'
+
+  VoiceStreamResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiGatewayResource
+      PathPart: 'voice-stream'
+
+  VoiceResponseResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ParentId: !Ref ApiGatewayResource
+      PathPart: 'voice-response'
+
+  VoiceSessionMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref VoiceSessionResource
+      HttpMethod: 'POST'
+      AuthorizationType: 'NONE'
+      Integration:
+        Type: 'AWS_PROXY'
+        IntegrationHttpMethod: 'POST'
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VoiceGatewayFunction.Arn}/invocations'
+
+  VoiceStreamMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref VoiceStreamResource
+      HttpMethod: 'POST'
+      AuthorizationType: 'NONE'
+      Integration:
+        Type: 'AWS_PROXY'
+        IntegrationHttpMethod: 'POST'
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VoiceGatewayFunction.Arn}/invocations'
+
+  VoiceResponseMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      RestApiId: !Ref ApiGateway
+      ResourceId: !Ref VoiceResponseResource
+      HttpMethod: 'GET'
+      AuthorizationType: 'NONE'
+      Integration:
+        Type: 'AWS_PROXY'
+        IntegrationHttpMethod: 'POST'
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VoiceGatewayFunction.Arn}/invocations'
+
+  ApiGatewayDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn:
+      - VoiceSessionMethod
+      - VoiceStreamMethod
+      - VoiceResponseMethod
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: !Ref Environment
+
+  PermissionForApiGatewayToInvokeLambda:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      FunctionName: !Ref VoiceGatewayFunction
+      Action: 'lambda:InvokeFunction'
+      Principal: 'apigateway.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*'
+
+Outputs:
+  VectorDatabaseTableName:
+    Description: 'Name of the Vector Database DynamoDB table'
+    Value: !Ref VectorDatabaseTable
+
+  KnowledgeGraphTableName:
+    Description: 'Name of the Knowledge Graph DynamoDB table'
+    Value: !Ref KnowledgeGraphTable
+
+  TimeSeriesTableName:
+    Description: 'Name of the Time Series DynamoDB table'
+    Value: !Ref TimeSeriesTable
+
+  SessionTableName:
+    Description: 'Name of the Session DynamoDB table'
+    Value: !Ref SessionTable
+
+  DataBucketName:
+    Description: 'Name of the S3 bucket for data storage'
+    Value: !Ref DataBucket
+
+  OpenSearchDomainEndpoint:
+    Description: 'Endpoint URL for OpenSearch domain'
+    Value: !GetAtt OpenSearchDomain.DomainEndpoint
+
+  VoiceGatewayFunctionArn:
+    Description: 'ARN of the Voice Gateway Lambda function'
+    Value: !GetAtt VoiceGatewayFunction.Arn
+
+  AgentToolsFunctionArn:
+    Description: 'ARN of the Agent Tools Lambda function'
+    Value: !GetAtt AgentToolsFunction.Arn
+
+  DataProcessingFunctionArn:
+    Description: 'ARN of the Data Processing Lambda function'
+    Value: !GetAtt DataProcessingFunction.Arn
+
+  ApiGatewayURL:
+    Description: 'URL of the API Gateway endpoint'
+    Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Environment}'

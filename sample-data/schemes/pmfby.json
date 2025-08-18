@@ -1,0 +1,15 @@
+{
+  "id": "scheme:pmfby",
+  "name": "Pradhan Mantri Fasal Bima Yojana",
+  "type": "Crop Insurance",
+  "description": "A comprehensive crop insurance scheme that aims to provide insurance coverage and financial support to farmers in the event of crop failure due to natural calamities, pests, and diseases.",
+  "eligibility": "All farmers growing notified crops in notified areas. Both loanee farmers (who have taken Institutional loans) and non-loanee farmers (who have not taken loans) can apply.",
+  "benefits": "Financial protection against crop loss due to natural calamities, subsidized premium rates, comprehensive risk coverage from pre-sowing to post-harvest, use of technology for quick claim settlement.",
+  "how_to_apply": "Loanee farmers are automatically enrolled through banks. Non-loanee farmers can apply through designated insurance companies, banks, Common Service Centers, or online portals with necessary documents and premium payment.",
+  "deadlines": "For Kharif crops: July 31st, For Rabi crops: December 31st (dates may vary by state)",
+  "states": ["all"],
+  "farmer_type": ["all"],
+  "crop_type": ["all"],
+  "contact": "Local Agriculture Department, Banks, Insurance Companies, or toll-free number: 1800-180-1551",
+  "website": "https://pmfby.gov.in/"
+}

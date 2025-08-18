@@ -1,0 +1,102 @@
+{
+  "timestamp": "1755281552",
+  "date": "2025-08-15",
+  "crops": [
+    {
+      "id": "rice",
+      "name": "Rice",
+      "markets": [
+        {
+          "name": "Nagpur APMC",
+          "price": 2150,
+          "unit": "quintal",
+          "trend": "stable"
+        },
+        {
+          "name": "Pune APMC",
+          "price": 2200,
+          "unit": "quintal",
+          "trend": "rising"
+        },
+        {
+          "name": "Mumbai APMC",
+          "price": 2250,
+          "unit": "quintal",
+          "trend": "rising"
+        }
+      ],
+      "history": [
+        {"date": "", "price": 2120},
+        {"date": "", "price": 2130},
+        {"date": "", "price": 2140},
+        {"date": "", "price": 2150},
+        {"date": "", "price": 2170},
+        {"date": "", "price": 2190}
+      ]
+    },
+    {
+      "id": "wheat",
+      "name": "Wheat",
+      "markets": [
+        {
+          "name": "Nagpur APMC",
+          "price": 2050,
+          "unit": "quintal",
+          "trend": "falling"
+        },
+        {
+          "name": "Pune APMC",
+          "price": 2100,
+          "unit": "quintal",
+          "trend": "stable"
+        },
+        {
+          "name": "Mumbai APMC",
+          "price": 2150,
+          "unit": "quintal",
+          "trend": "stable"
+        }
+      ],
+      "history": [
+        {"date": "", "price": 2150},
+        {"date": "", "price": 2140},
+        {"date": "", "price": 2120},
+        {"date": "", "price": 2100},
+        {"date": "", "price": 2080},
+        {"date": "", "price": 2050}
+      ]
+    },
+    {
+      "id": "cotton",
+      "name": "Cotton",
+      "markets": [
+        {
+          "name": "Nagpur APMC",
+          "price": 6200,
+          "unit": "quintal",
+          "trend": "rising"
+        },
+        {
+          "name": "Pune APMC",
+          "price": 6150,
+          "unit": "quintal",
+          "trend": "rising"
+        },
+        {
+          "name": "Mumbai APMC",
+          "price": 6300,
+          "unit": "quintal",
+          "trend": "rising"
+        }
+      ],
+      "history": [
+        {"date": "", "price": 6000},
+        {"date": "", "price": 6050},
+        {"date": "", "price": 6080},
+        {"date": "", "price": 6100},
+        {"date": "", "price": 6150},
+        {"date": "", "price": 6200}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "crop:cotton",
+  "name": "Cotton",
+  "scientific_name": "Gossypium hirsutum",
+  "type": "Fiber crop",
+  "description": "Cotton is a soft, fluffy staple fiber that grows in a boll around the seeds of cotton plants. It is a major cash crop in India.",
+  "seasons": ["kharif"],
+  "soil_types": "Deep, well-drained soils, black cotton soils are ideal",
+  "climate": "Warm climate with temperature between 21-37°C",
+  "water_requirements": "500-800 mm during the growing season",
+  "fertilizer_requirements": "Balanced NPK, higher phosphorus during boll development",
+  "growth_duration": "150-180 days from sowing to first picking",
+  "pests": ["bollworm", "whitefly", "thrips"],
+  "diseases": ["wilt", "leaf_curl_virus", "boll_rot"],
+  "varieties": [
+    {
+      "name": "Bt Cotton (Bollgard II)",
+      "yield": "20-25 quintals per hectare",
+      "duration": "160-180 days",
+      "features": "Pest resistant, higher yield"
+    },
+    {
+      "name": "Desi Cotton (G. arboreum)",
+      "yield": "12-15 quintals per hectare",
+      "duration": "150-170 days",
+      "features": "Drought tolerant, less input requirements"
+    }
+  ]
+}
