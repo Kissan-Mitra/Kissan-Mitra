@@ -12,6 +12,14 @@ Kissan Mitra is a serverless, event-driven architecture that enables farmers to 
 - Information on government schemes and benefits
 - Pest management advice
 
+## How to use
+
+1. Call +1 (712) 217-1022.
+2. That's it!
+
+Now you can ask questions like (you can talk in other languages like Hindi):
+- I am a farmer in Punjab. What kind of subsidies can I get?
+
 ## Architecture
 
 The system follows a serverless, event-driven architecture with these key components:
