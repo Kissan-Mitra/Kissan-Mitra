@@ -16,9 +16,13 @@ Kissan Mitra is a serverless, event-driven architecture that enables farmers to 
 
 1. Call +1 (712) 217-1022.
 2. That's it!
+   NOTE: We only have a few credits for demo purposes. If you have very long conversations, we might run out of credits, and then you won't be able to access the agent. Please use the agent consciously.
 
 Now you can ask questions like (you can talk in other languages like Hindi):
 - I am a farmer in Punjab. What kind of subsidies can I get?
+- What subsidies or government schemes can I apply for as a farmer?
+- What crops should I plant next season for better profit?
+- My crop leaves have turned yellow. What should I do immediately?
 
 ## Architecture
 
